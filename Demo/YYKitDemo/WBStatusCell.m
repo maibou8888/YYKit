@@ -168,6 +168,7 @@
     _badgeImageView = [UIImageView new];
     _badgeImageView.clipsToBounds = YES;
     _badgeImageView.contentMode = UIViewContentModeScaleAspectFit;
+    
     _label = [YYLabel new];
     _label.textVerticalAlignment = YYTextVerticalAlignmentCenter;
     _label.numberOfLines = 3;
@@ -175,11 +176,13 @@
     _label.displaysAsynchronously = YES;
     _label.fadeOnAsynchronouslyDisplay = NO;
     _label.fadeOnHighlight = NO;
+    
     _button = [UIButton buttonWithType:UIButtonTypeCustom];
     [self addSubview:_imageView];
     [self addSubview:_badgeImageView];
     [self addSubview:_label];
     [self addSubview:_button];
+    
     self.backgroundColor = kWBCellInnerViewColor;
     self.layer.borderWidth = CGFloatFromPixel(1);
     self.layer.borderColor = [UIColor colorWithWhite:0.000 alpha:0.070].CGColor;
@@ -202,13 +205,17 @@
      */
     
     _isRetweet = isRetweet;
+    
+    //判断卡片类型
     switch (isRetweet ? layout.retweetCardType : layout.cardType) {
         case WBStatusCardTypeNone: {
             
         } break;
         case WBStatusCardTypeNormal: {
+            //普通类型
             self.width = kWBCellContentWidth;
             if (pageInfo.typeIcon) {
+                //图片左上角有一个小的图片
                 _badgeImageView.hidden = NO;
                 _badgeImageView.frame = CGRectMake(0, 0, 25, 25);
                 [_badgeImageView setImageWithURL:pageInfo.typeIcon placeholder:nil];
@@ -226,9 +233,11 @@
             } else {
                 _imageView.hidden = YES;
             }
+            
             _label.hidden = NO;
             _label.frame = isRetweet ? layout.retweetCardTextRect : layout.cardTextRect;
             _label.textLayout = isRetweet ? layout.retweetCardTextLayout : layout.cardTextLayout;
+            
             WBButtonLink *button = pageInfo.buttons.firstObject;
             if (button.pic && button.name) {
                 _button.hidden = NO;
@@ -242,6 +251,7 @@
             }
         }break;
         case WBStatusCardTypeVideo: {
+            //视频类型
             self.width = self.height;
             _badgeImageView.hidden = YES;
             _label.hidden = YES;
