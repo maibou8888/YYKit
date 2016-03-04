@@ -361,6 +361,8 @@
     NSArray *colors = @[(id)clear.CGColor,(id)dark.CGColor, (id)clear.CGColor];
     NSArray *locations = @[@0.2, @0.5, @0.8];
     
+    //CAGradientLayer可以方便的处理颜色渐变。
+    //两个渐变色的分割线
     _line1 = [CAGradientLayer layer];
     _line1.colors = colors;
     _line1.locations = locations;
@@ -419,6 +421,7 @@
 }
 
 - (void)setWithLayout:(WBStatusLayout *)layout {
+    //在WBStatusLayout里面计算好layout
     _repostLabel.width = layout.toolbarRepostTextWidth;
     _commentLabel.width = layout.toolbarCommentTextWidth;
     _likeLabel.width = layout.toolbarLikeTextWidth;
@@ -452,6 +455,7 @@
     return img;
 }
 
+//布局button上面的图片和文本
 - (void)adjustImage:(UIImageView *)image label:(YYLabel *)label inButton:(UIButton *)button {
     CGFloat imageWidth = image.bounds.size.width;
     CGFloat labelWidth = label.width;
@@ -461,6 +465,7 @@
     label.right = CGFloatPixelRound(button.width - paddingSide);
 }
 
+//点赞
 - (void)setLiked:(BOOL)liked withAnimation:(BOOL)animation {
     WBStatusLayout *layout = _cell.statusView.layout;
     if (layout.status.attitudesStatus == liked) return;
@@ -601,6 +606,7 @@
     _contentView.width = kScreenWidth;
     _contentView.height = 1;
     _contentView.backgroundColor = [UIColor whiteColor];
+    
     static UIImage *topLineBG, *bottomLineBG;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -617,12 +623,13 @@
             CGContextFillPath(context);
         }];
     });
+    
+    //顶部和底部分割线
     UIImageView *topLine = [[UIImageView alloc] initWithImage:topLineBG];
     topLine.width = _contentView.width;
     topLine.bottom = 0;
     topLine.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
     [_contentView addSubview:topLine];
-    
     
     UIImageView *bottomLine = [[UIImageView alloc] initWithImage:bottomLineBG];
     bottomLine.width = _contentView.width;
@@ -693,6 +700,7 @@
     };
     [_contentView addSubview:_retweetTextLabel];
     
+    //文字下方的图片数组
     NSMutableArray *picViews = [NSMutableArray new];
     for (int i = 0; i < 9; i++) {
         YYControl *imageView = [YYControl new];
@@ -733,7 +741,7 @@
     
     _tagView = [WBStatusTagView new];
     _tagView.left = kWBCellPadding;
-    _tagView.hidden = YES;
+//    _tagView.hidden = YES;
     [_contentView addSubview:_tagView];
     
     _toolbarView = [WBStatusToolbarView new];
@@ -776,10 +784,13 @@
     _profileView.top = top;
     top += layout.profileHeight;
 
+    //微博图片URL转化
     NSURL *picBg = [WBStatusHelper defaultURLForImageURL:layout.status.picBg];
     __weak typeof(_vipBackgroundView) vipBackgroundView = _vipBackgroundView;
     [_vipBackgroundView setImageWithURL:picBg placeholder:nil options:YYWebImageOptionAvoidSetImage completion:^(UIImage *image, NSURL *url, YYWebImageFromType from, YYWebImageStage stage, NSError *error) {
         if (image) {
+            //该方面使用一个CGImageRef创建UIImage，在创建时还可以指定方法倍数以及旋转方向。
+            //当scale设置为1的时候，新创建的图像将和原图像尺寸一摸一样，而orientaion则可以指定新的图像的绘制方向。
             image = [UIImage imageWithCGImage:image.CGImage scale:2.0 orientation:image.imageOrientation];
             vipBackgroundView.image = image;
         }
@@ -790,15 +801,12 @@
     _textLabel.textLayout = layout.textLayout;
     top += layout.textHeight;
     
-    
-    
     _retweetBackgroundView.hidden = YES;
     _retweetTextLabel.hidden = YES;
     _cardView.hidden = YES;
     if (layout.picHeight == 0 && layout.retweetPicHeight == 0) {
         [self _hideImageViews];
     }
-    
     
     //优先级是 转发->图片->卡片
     if (layout.retweetHeight > 0) {
@@ -812,31 +820,37 @@
         _retweetTextLabel.hidden = NO;
         
         if (layout.retweetPicHeight > 0) {
+            NSLog(@"转发有图片");
             [self _setImageViewWithTop:_retweetTextLabel.bottom isRetweet:YES];
         } else {
             [self _hideImageViews];
+
             if (layout.retweetCardHeight > 0) {
+                NSLog(@"转发只有卡片");
                 _cardView.top = _retweetTextLabel.bottom;
                 _cardView.hidden = NO;
                 [_cardView setWithLayout:layout isRetweet:YES];
             }
         }
     } else if (layout.picHeight > 0) {
+        NSLog(@"非转发有图片");
         [self _setImageViewWithTop:top isRetweet:NO];
+        
     } else if (layout.cardHeight > 0) {
+        NSLog(@"非转发只有卡片");
         _cardView.top = top;
         _cardView.hidden = NO;
         [_cardView setWithLayout:layout isRetweet:NO];
     }
     
     if (layout.tagHeight > 0) {
+        NSLog(@"有tag");
         _tagView.hidden = NO;
         [_tagView setWithLayout:layout];
         _tagView.centerY = _contentView.height - kWBCellToolbarHeight - layout.tagHeight / 2;
     } else {
         _tagView.hidden = YES;
     }
-    
     
     _toolbarView.bottom = _contentView.height;
     [_toolbarView setWithLayout:layout];
@@ -860,6 +874,8 @@
             imageView.hidden = YES;
         } else {
             CGPoint origin = {0};
+            
+            //图片一共分三种，1，4，9个图片
             switch (picsCount) {
                 case 1: {
                     origin.x = kWBCellPadding;
@@ -879,10 +895,13 @@
             [imageView.layer removeAnimationForKey:@"contents"];
             WBPicture *pic = pics[i];
             
+            //获取图片上的subViews
             UIView *badge = imageView.subviews.firstObject;
+            
             switch (pic.largest.badgeType) {
                 case WBPictureBadgeTypeNone: {
                     if (badge.layer.contents) {
+                        //如果是普通图片则移除图片上的badge
                         badge.layer.contents = nil;
                         badge.hidden = YES;
                     }
@@ -905,13 +924,16 @@
                 @strongify(imageView);
                 if (!imageView) return;
                 if (image && stage == YYWebImageStageFinished) {
-                    int width = pic.bmiddle.width;
-                    int height = pic.bmiddle.height;
+                    int width = pic.middlePlus.width;
+                    int height = pic.middlePlus.height;
+                    
                     CGFloat scale = (height / width) / (imageView.height / imageView.width);
                     if (scale < 0.99 || isnan(scale)) { // 宽图把左右两边裁掉
                         imageView.contentMode = UIViewContentModeScaleAspectFill;
                         imageView.layer.contentsRect = CGRectMake(0, 0, 1, 1);
-                    } else { // 高图只保留顶部
+                    } else {
+                        //高图只保留顶部
+                        //contentsRect,这个属性是可以控制图片显示的尺寸
                         imageView.contentMode = UIViewContentModeScaleToFill;
                         imageView.layer.contentsRect = CGRectMake(0, 0, 1, (float)width / height);
                     }
@@ -929,6 +951,7 @@
     }
 }
 
+//touch事件主要处理点击contentView以及转发视图的高亮颜色
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch *touch = touches.anyObject;
     CGPoint p = [touch locationInView:_retweetBackgroundView];
@@ -969,11 +992,6 @@
 }
 
 @end
-
-
-
-
-
 
 @implementation WBStatusCell
 

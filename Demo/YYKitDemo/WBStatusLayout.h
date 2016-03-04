@@ -118,15 +118,15 @@ typedef NS_ENUM(NSUInteger, WBStatusTagType) {
 
 // 图片
 @property (nonatomic, assign) CGFloat picHeight; //图片高度，0为没图片
-@property (nonatomic, assign) CGSize picSize;
+@property (nonatomic, assign) CGSize picSize;    //非转发图片的size
 
 // 转发
 @property (nonatomic, assign) CGFloat retweetHeight; //转发高度，0为没转发
 @property (nonatomic, assign) CGFloat retweetTextHeight;
 @property (nonatomic, strong) YYTextLayout *retweetTextLayout; //被转发文本
-@property (nonatomic, assign) CGFloat retweetPicHeight;
-@property (nonatomic, assign) CGSize retweetPicSize;
-@property (nonatomic, assign) CGFloat retweetCardHeight;
+@property (nonatomic, assign) CGFloat retweetPicHeight;        //转发图片的高度
+@property (nonatomic, assign) CGSize retweetPicSize;           //转发图片的size
+@property (nonatomic, assign) CGFloat retweetCardHeight;       //转发卡片的高度
 @property (nonatomic, assign) WBStatusCardType retweetCardType;
 @property (nonatomic, strong) YYTextLayout *retweetCardTextLayout; //被转发文本
 @property (nonatomic, assign) CGRect retweetCardTextRect;

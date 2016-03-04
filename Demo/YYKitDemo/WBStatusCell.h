@@ -74,21 +74,21 @@
 @property (nonatomic, weak) WBStatusCell *cell;
 @end
 
-
-
-
 @interface WBStatusView : UIView
 @property (nonatomic, strong) UIView *contentView;              // 容器
 @property (nonatomic, strong) WBStatusTitleView *titleView;     // 标题栏
 @property (nonatomic, strong) WBStatusProfileView *profileView; // 用户资料
-@property (nonatomic, strong) YYLabel *textLabel;               // 文本
-@property (nonatomic, strong) NSArray<UIView *> *picViews;      // 图片
+@property (nonatomic, strong) YYLabel *textLabel;               // 用户资料下方文本
+@property (nonatomic, strong) NSArray<UIView *> *picViews;      // 图片数组
+
 @property (nonatomic, strong) UIView *retweetBackgroundView;    //转发容器
 @property (nonatomic, strong) YYLabel *retweetTextLabel;        // 转发文本
 @property (nonatomic, strong) WBStatusCardView *cardView;       // 卡片
+
 @property (nonatomic, strong) WBStatusTagView *tagView;         // 下方Tag
 @property (nonatomic, strong) WBStatusToolbarView *toolbarView; // 工具栏
-@property (nonatomic, strong) UIImageView *vipBackgroundView;   // VIP 自定义背景
+
+@property (nonatomic, strong) UIImageView *vipBackgroundView;   // 用户资料的背景图片
 @property (nonatomic, strong) UIButton *menuButton;             // 菜单按钮
 @property (nonatomic, strong) UIButton *followButton;           // 关注按钮
 
@@ -104,7 +104,6 @@
 @property (nonatomic, strong) WBStatusView *statusView;
 - (void)setLayout:(WBStatusLayout *)layout;
 @end
-
 
 
 @protocol WBStatusCellDelegate <NSObject>
