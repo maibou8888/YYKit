@@ -863,6 +863,7 @@
 }
 
 - (void)_setImageViewWithTop:(CGFloat)imageTop isRetweet:(BOOL)isRetweet {
+    //转发(非转发)的每一张小图片的size
     CGSize picSize = isRetweet ? _layout.retweetPicSize : _layout.picSize;
     NSArray *pics = isRetweet ? _layout.status.retweetedStatus.pics : _layout.status.pics;
     int picsCount = (int)pics.count;
@@ -875,7 +876,7 @@
         } else {
             CGPoint origin = {0};
             
-            //图片一共分三种，1，4，9个图片
+            //图片一共分三种，1，4，9个图片, 分别进行位置计算
             switch (picsCount) {
                 case 1: {
                     origin.x = kWBCellPadding;
@@ -898,6 +899,7 @@
             //获取图片上的subViews
             UIView *badge = imageView.subviews.firstObject;
             
+            //区分原图徽章类型
             switch (pic.largest.badgeType) {
                 case WBPictureBadgeTypeNone: {
                     if (badge.layer.contents) {
@@ -924,8 +926,8 @@
                 @strongify(imageView);
                 if (!imageView) return;
                 if (image && stage == YYWebImageStageFinished) {
-                    int width = pic.middlePlus.width;
-                    int height = pic.middlePlus.height;
+                    int width = pic.bmiddle.width;
+                    int height = pic.bmiddle.height;
                     
                     CGFloat scale = (height / width) / (imageView.height / imageView.width);
                     if (scale < 0.99 || isnan(scale)) { // 宽图把左右两边裁掉
@@ -938,6 +940,8 @@
                         imageView.layer.contentsRect = CGRectMake(0, 0, 1, (float)width / height);
                     }
                     ((YYControl *)imageView).image = image;
+                    
+                    //添加一个过渡动画
                     if (from != YYWebImageFromMemoryCacheFast) {
                         CATransition *transition = [CATransition animation];
                         transition.duration = 0.15;

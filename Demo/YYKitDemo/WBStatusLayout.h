@@ -121,14 +121,14 @@ typedef NS_ENUM(NSUInteger, WBStatusTagType) {
 @property (nonatomic, assign) CGSize picSize;    //非转发图片的size
 
 // 转发
-@property (nonatomic, assign) CGFloat retweetHeight; //转发高度，0为没转发
-@property (nonatomic, assign) CGFloat retweetTextHeight;
-@property (nonatomic, strong) YYTextLayout *retweetTextLayout; //被转发文本
-@property (nonatomic, assign) CGFloat retweetPicHeight;        //转发图片的高度
-@property (nonatomic, assign) CGSize retweetPicSize;           //转发图片的size
-@property (nonatomic, assign) CGFloat retweetCardHeight;       //转发卡片的高度
-@property (nonatomic, assign) WBStatusCardType retweetCardType;
-@property (nonatomic, strong) YYTextLayout *retweetCardTextLayout; //被转发文本
+@property (nonatomic, assign) CGFloat retweetHeight;                //转发高度，0为没转发
+@property (nonatomic, assign) CGFloat retweetTextHeight;            //转发的文本高度
+@property (nonatomic, strong) YYTextLayout *retweetTextLayout;      //转发的文本
+@property (nonatomic, assign) CGFloat retweetPicHeight;             //转发图片的高度
+@property (nonatomic, assign) CGSize retweetPicSize;                //转发图片的size
+@property (nonatomic, assign) CGFloat retweetCardHeight;            //转发卡片的高度
+@property (nonatomic, assign) WBStatusCardType retweetCardType;     //卡片的类型
+@property (nonatomic, strong) YYTextLayout *retweetCardTextLayout;  //被转发的卡片文本
 @property (nonatomic, assign) CGRect retweetCardTextRect;
 
 // 卡片

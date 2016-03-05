@@ -1154,7 +1154,7 @@
 				TargetAttributes = {
 					D97484CF19CAAD2900F46DE1 = {
 						CreatedOnToolsVersion = 6.0.1;
-						DevelopmentTeam = Y4MT84GBQB;
+						DevelopmentTeam = 77UWE2TW7L;
 					};
 				};
 			};
@@ -1394,8 +1394,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Harbin Kailidai Information Consulting Co., Ltd. (Y4MT84GBQB)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Harbin Kailidai Information Consulting Co., Ltd. (Y4MT84GBQB)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Shanghai Red Tiger Network Technology Co., Ltd (77UWE2TW7L)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shanghai Red Tiger Network Technology Co., Ltd (77UWE2TW7L)";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1416,7 +1416,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "4abce46e-da63-49d3-a520-9c9d8488ff11";
+				PROVISIONING_PROFILE = "4ebd3b66-38e7-40d8-9639-7b194f1ed89c";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1439,8 +1439,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Harbin Kailidai Information Consulting Co., Ltd. (Y4MT84GBQB)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Harbin Kailidai Information Consulting Co., Ltd. (Y4MT84GBQB)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Shanghai Red Tiger Network Technology Co., Ltd (77UWE2TW7L)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shanghai Red Tiger Network Technology Co., Ltd (77UWE2TW7L)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1453,7 +1453,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "4abce46e-da63-49d3-a520-9c9d8488ff11";
+				PROVISIONING_PROFILE = "4ebd3b66-38e7-40d8-9639-7b194f1ed89c";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -1486,7 +1486,7 @@
 					"$(PROJECT_DIR)/**",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ibireme.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wanjiang.shop;
 				PRODUCT_NAME = YYKitDemo;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1518,7 +1518,7 @@
 					"$(PROJECT_DIR)/**",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ibireme.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wanjiang.shop;
 				PRODUCT_NAME = YYKitDemo;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
