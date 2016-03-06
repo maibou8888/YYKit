@@ -42,6 +42,9 @@ extern const CGSize YYTextContainerMaxSize;
  
  All methods in this class is thread-safe.
  
+ **在排版中，图文混排是非常常见的需求，但有时候我们的图片并一定都是正常的矩形，
+ **这个时候我们如果需要将文本环绕在图片周围，就可以用路径排除（exclusion paths）了。
+ 
  Example:
  
      ┌─────────────────────────────┐  <------- container

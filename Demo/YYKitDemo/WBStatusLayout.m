@@ -80,6 +80,7 @@
 }
 - (id)content {
     /// UIImageView 只能在主线程访问
+    //pthread_main_np ：获取主线程
     if (pthread_main_np() == 0) return nil;
     if (_imageView) return _imageView;
     
@@ -173,6 +174,7 @@
     WBStatusTitle *title = _status.title;
     if (title.text.length == 0) return;
     
+    //用字符属性来处理文本和图片的布局
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:title.text];
     if (title.iconURL) {
         NSAttributedString *icon = [self _attachmentWithFontSize:kWBCellTitlebarFontSize imageURL:title.iconURL shrink:NO];
@@ -183,6 +185,7 @@
     text.color = kWBCellToolbarTitleColor;
     text.font = [UIFont systemFontOfSize:kWBCellTitlebarFontSize];
     
+    //设置文本layout
     YYTextContainer *container = [YYTextContainer containerWithSize:CGSizeMake(kScreenWidth - 100, kWBCellTitleHeight)];
     _titleTextLayout = [YYTextLayout layoutWithContainer:container text:text];
     _titleHeight = kWBCellTitleHeight;
@@ -233,7 +236,7 @@
     
     nameText.font = [UIFont systemFontOfSize:kWBCellNameFontSize];
     nameText.color = user.mbrank > 0 ? kWBCellNameOrangeColor : kWBCellNameNormalColor;
-    nameText.lineBreakMode = NSLineBreakByCharWrapping;
+    nameText.lineBreakMode = NSLineBreakByCharWrapping;     //NSLineBreakByCharWrapping 保留整个字符
     
     YYTextContainer *container = [YYTextContainer containerWithSize:CGSizeMake(kWBCellNameWidth, 9999)];
     container.maximumNumberOfRows = 1;
@@ -257,6 +260,7 @@
     // 来自 XXX
     if (_status.source.length) {
         // <a href="sinaweibo://customweibosource" rel="nofollow">iPhone 5siPhone 5s</a>
+        //超链接和文本的正则
         static NSRegularExpression *hrefRegex, *textRegex;
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
@@ -276,16 +280,20 @@
             [from appendString:[NSString stringWithFormat:@"来自 %@", text]];
             from.font = [UIFont systemFontOfSize:kWBCellSourceFontSize];
             from.color = kWBCellTimeNormalColor;
+            
+            //来源可以被点击
             if (_status.sourceAllowClick > 0) {
                 NSRange range = NSMakeRange(3, text.length);
                 [from setColor:kWBCellTextHighlightColor range:range];
                 YYTextBackedString *backed = [YYTextBackedString stringWithString:href];
                 [from setTextBackedString:backed range:range];
                 
+                //点击文字的背景边框
                 YYTextBorder *border = [YYTextBorder new];
                 border.insets = UIEdgeInsetsMake(-2, 0, -2, 0);
                 border.fillColor = kWBCellTextHighlightBackgroundColor;
                 border.cornerRadius = 3;
+                
                 YYTextHighlight *highlight = [YYTextHighlight new];
                 if (href) highlight.userInfo = @{kWBLinkHrefName : href};
                 [highlight setBackgroundBorder:border];
@@ -653,20 +661,26 @@
                                      textColor:(UIColor *)textColor {
     if (!status) return nil;
     
+    //拿到正文文本
     NSMutableString *string = status.text.mutableCopy;
     if (string.length == 0) return nil;
+    
     if (isRetweet) {
         NSString *name = status.user.name;
         if (name.length == 0) {
             name = status.user.screenName;
         }
+        
+        //如果是转发则在用户名称前面拼接@
         if (name) {
             NSString *insert = [NSString stringWithFormat:@"@%@:",name];
             [string insertString:insert atIndex:0];
         }
     }
+    
     // 字体
     UIFont *font = [UIFont systemFontOfSize:fontSize];
+    
     // 高亮状态的背景
     YYTextBorder *highlightBorder = [YYTextBorder new];
     highlightBorder.insets = UIEdgeInsetsMake(-2, 0, -2, 0);
