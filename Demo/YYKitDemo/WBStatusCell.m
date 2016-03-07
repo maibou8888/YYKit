@@ -165,6 +165,7 @@
     _imageView = [UIImageView new];
     _imageView.clipsToBounds = YES;
     _imageView.contentMode = UIViewContentModeScaleAspectFill;
+    
     _badgeImageView = [UIImageView new];
     _badgeImageView.clipsToBounds = YES;
     _badgeImageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -178,6 +179,7 @@
     _label.fadeOnHighlight = NO;
     
     _button = [UIButton buttonWithType:UIButtonTypeCustom];
+    
     [self addSubview:_imageView];
     [self addSubview:_badgeImageView];
     [self addSubview:_label];
@@ -635,6 +637,7 @@
     bottomLine.width = _contentView.width;
     bottomLine.top = _contentView.height;
     bottomLine.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+    
     [_contentView addSubview:bottomLine];
     [self addSubview:_contentView];
     
@@ -652,6 +655,7 @@
     [_contentView addSubview:_vipBackgroundView];
     
     
+    //下三角button
     _menuButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _menuButton.size = CGSizeMake(30, 30);
     [_menuButton setImage:[WBStatusHelper imageNamed:@"timeline_icon_more"] forState:UIControlStateNormal];
