@@ -133,7 +133,7 @@ typedef NS_ENUM(NSUInteger, WBStatusTagType) {
 
 // 卡片
 @property (nonatomic, assign) CGFloat cardHeight; //卡片高度，0为没卡片
-@property (nonatomic, assign) WBStatusCardType cardType;
+@property (nonatomic, assign) WBStatusCardType cardType;    //卡片类型
 @property (nonatomic, strong) YYTextLayout *cardTextLayout; //卡片文本
 @property (nonatomic, assign) CGRect cardTextRect;
 

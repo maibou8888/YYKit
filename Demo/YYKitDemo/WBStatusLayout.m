@@ -133,6 +133,8 @@
     [self _layoutTitle];
     [self _layoutProfile];
     [self _layoutRetweet];
+    
+    //一条里，图片|转发|卡片不能同时存在，优先级是 转发->图片->卡片
     if (_retweetHeight == 0) {
         [self _layoutPics];
         if (_picHeight == 0) {
@@ -149,6 +151,7 @@
     _height += _titleHeight;
     _height += _profileHeight;
     _height += _textHeight;
+    
     if (_retweetHeight > 0) {
         _height += _retweetHeight;
     } else if (_picHeight > 0) {
@@ -156,6 +159,7 @@
     } else if (_cardHeight > 0) {
         _height += _cardHeight;
     }
+    
     if (_tagHeight > 0) {
         _height += _tagHeight;
     } else {
@@ -473,17 +477,18 @@
     WBPageInfo *pageInfo = status.pageInfo;
     if (!pageInfo) return;
     
+    //初始化四个临时变量
     WBStatusCardType cardType = WBStatusCardTypeNone;
     CGFloat cardHeight = 0;
     YYTextLayout *cardTextLayout = nil;
     CGRect textRect = CGRectZero;
     
     if ((pageInfo.type == 11) && [pageInfo.objectType isEqualToString:@"video"]) {
-        // 视频，一个大图片，上面播放按钮
+        // 视频，一个大图片，上面放播放按钮
         if (pageInfo.pagePic) {
             cardType = WBStatusCardTypeVideo;
             cardHeight = (2 * kWBCellContentWidth - kWBCellPaddingPic) / 3.0;
-        }
+        } 
     } else {
         BOOL hasImage = pageInfo.pagePic != nil;
         BOOL hasBadge = pageInfo.typeIcon != nil;
@@ -513,6 +518,8 @@
         }
         textRect.origin.x += 10; //padding
         textRect.size.width = kWBCellContentWidth - textRect.origin.x;
+        
+        //文本后面的按钮
         if (hasButtom) textRect.size.width -= 60;
         textRect.size.width -= 10; //padding
         
@@ -652,16 +659,13 @@
     _toolbarLikeTextWidth = CGFloatPixelRound(_toolbarLikeTextLayout.textBoundingRect.size.width);
 }
 
-
-
-
 - (NSMutableAttributedString *)_textWithStatus:(WBStatus *)status
                                      isRetweet:(BOOL)isRetweet
                                       fontSize:(CGFloat)fontSize
                                      textColor:(UIColor *)textColor {
     if (!status) return nil;
     
-    //拿到正文文本
+    //拿到正文文本(不包括前面的@用户)
     NSMutableString *string = status.text.mutableCopy;
     if (string.length == 0) return nil;
     
@@ -697,8 +701,9 @@
         if (wburl.urlTitle.length == 0) continue;
         NSString *urlTitle = wburl.urlTitle;
         if (urlTitle.length > 27) {
-            urlTitle = [[urlTitle substringToIndex:27] stringByAppendingString:YYTextTruncationToken];
+            urlTitle = [[urlTitle substringToIndex:27] stringByAppendingString:YYTextTruncationToken];;
         }
+        
         NSRange searchRange = NSMakeRange(0, text.string.length);
         do {
             NSRange range = [text.string rangeOfString:wburl.shortURL options:kNilOptions range:searchRange];
@@ -709,8 +714,10 @@
                     [wburl.pageID isEqualToString:status.pageInfo.pageID]) {
                     if ((!isRetweet && !status.retweetedStatus) || isRetweet) {
                         if (status.pics.count == 0) {
+                            //@互联网的那点事:iPhone 6s官方宣传视频曝光，你们城里人真会玩，如果iphone 6s真的是这样那的确是碉堡了[嘻嘻]http://t.cn/RyU1m9J
+                            //@互联网的那点事:iPhone 6s官方宣传视频曝光，你们城里人真会玩，如果iphone 6s真的是这样那的确是碉堡了[嘻嘻]
                             [text replaceCharactersInRange:range withString:@""];
-                            break; // cut the tail, show with card
+                            break;
                         }
                     }
                 }
