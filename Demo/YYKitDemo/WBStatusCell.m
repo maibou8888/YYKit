@@ -11,26 +11,33 @@
 
 @implementation WBStatusTitleView
 - (instancetype)initWithFrame:(CGRect)frame {
+    
+    //初始化frameSize
     if (frame.size.width == 0 && frame.size.height == 0) {
         frame.size.width = kScreenWidth;
         frame.size.height = kWBCellTitleHeight;
     }
+    
     self = [super initWithFrame:frame];
+    
+    //标题文本layout
     _titleLabel = [YYLabel new];
     _titleLabel.size = CGSizeMake(kScreenWidth - 100, self.height);
-    _titleLabel.left = kWBCellPadding;
+    _titleLabel.origin = CGPointMake(kWBCellPadding, 0);
     _titleLabel.displaysAsynchronously = YES;
     _titleLabel.ignoreCommonProperties = YES;
     _titleLabel.fadeOnHighlight = NO;
     _titleLabel.fadeOnAsynchronouslyDisplay = NO;
     [self addSubview:_titleLabel];
     
+    //分割线
     CALayer *line = [CALayer layer];
     line.size = CGSizeMake(self.width, CGFloatFromPixel(1));
-    line.bottom = self.height;
+    line.origin = CGPointMake(0, self.height);
     line.backgroundColor = kWBCellLineColor.CGColor;
     [self.layer addSublayer:line];
     self.exclusiveTouch = YES;
+    
     return self;
 }
 @end
@@ -54,6 +61,7 @@
     _avatarView.contentMode = UIViewContentModeScaleAspectFill;
     [self addSubview:_avatarView];
     
+    //头像边框
     CALayer *avatarBorder = [CALayer layer];
     avatarBorder.frame = _avatarView.bounds;
     avatarBorder.borderWidth = CGFloatFromPixel(1);

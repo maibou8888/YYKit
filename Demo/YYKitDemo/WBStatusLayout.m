@@ -180,14 +180,15 @@
     
     //用字符属性来处理文本和图片的布局
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:title.text];
+    text.font = [UIFont systemFontOfSize:kWBCellTitlebarFontSize];
+    text.color = kWBCellToolbarTitleColor;
+    
     if (title.iconURL) {
         NSAttributedString *icon = [self _attachmentWithFontSize:kWBCellTitlebarFontSize imageURL:title.iconURL shrink:NO];
         if (icon) {
             [text insertAttributedString:icon atIndex:0];
         }
     }
-    text.color = kWBCellToolbarTitleColor;
-    text.font = [UIFont systemFontOfSize:kWBCellTitlebarFontSize];
     
     //设置文本layout
     YYTextContainer *container = [YYTextContainer containerWithSize:CGSizeMake(kScreenWidth - 100, kWBCellTitleHeight)];
@@ -268,6 +269,7 @@
         static NSRegularExpression *hrefRegex, *textRegex;
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
+            //?<= ?= 正则表达式零宽断言
             hrefRegex = [NSRegularExpression regularExpressionWithPattern:@"(?<=href=\").+(?=\" )" options:kNilOptions error:NULL];
             textRegex = [NSRegularExpression regularExpressionWithPattern:@"(?<=>).+(?=<)" options:kNilOptions error:NULL];
         });
@@ -696,6 +698,7 @@
     text.color = textColor;
     
     // 根据 urlStruct 中每个 URL.shortURL 来匹配文本，将其替换为图标+友好描述
+    //http://t.cn/Ry4UXdF 查看图片 -> (wburl.shortURL,wburl.urlTitle)
     for (WBURL *wburl in status.urlStruct) {
         if (wburl.shortURL.length == 0) continue;
         if (wburl.urlTitle.length == 0) continue;
@@ -728,7 +731,7 @@
                 // 替换的内容
                 NSMutableAttributedString *replace = [[NSMutableAttributedString alloc] initWithString:urlTitle];
                 if (wburl.urlTypePic.length) {
-                    // 链接头部有个图片附件 (要从网络获取)
+                    // 链接头部有个图片附件 (要从网络获取) -> 查看图片
                     NSURL *picURL = [WBStatusHelper defaultURLForImageURL:wburl.urlTypePic];
                     UIImage *image = [[YYImageCache sharedCache] getImageForKey:picURL.absoluteString];
                     NSAttributedString *pic = (image && !wburl.pics.count) ? [self _attachmentWithFontSize:fontSize image:image shrink:YES] : [self _attachmentWithFontSize:fontSize imageURL:wburl.urlTypePic shrink:YES];
@@ -810,9 +813,11 @@
         if (emo.range.location == NSNotFound && emo.range.length <= 1) continue;
         NSRange range = emo.range;
         range.location -= emoClipLength;
+        
+        //查看指定index的文本是否高亮以及是否为AttachmentAttribute
         if ([text attribute:YYTextHighlightAttributeName atIndex:range.location]) continue;
         if ([text attribute:YYTextAttachmentAttributeName atIndex:range.location]) continue;
-        NSString *emoString = [text.string substringWithRange:range];
+        NSString *emoString = [text.string substringWithRange:range];   //喵喵
         NSString *imagePath = [WBStatusHelper emoticonDic][emoString];
         UIImage *image = [WBStatusHelper imageWithPath:imagePath];
         if (!image) continue;

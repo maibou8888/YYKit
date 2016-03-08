@@ -266,6 +266,7 @@
 + (NSDictionary *)modelContainerPropertyGenericClass {
     return @{@"statuses" : [WBStatus class]};
 }
+
 @end
 
 
