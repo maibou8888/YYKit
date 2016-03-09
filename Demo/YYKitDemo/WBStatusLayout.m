@@ -702,6 +702,7 @@
     for (WBURL *wburl in status.urlStruct) {
         if (wburl.shortURL.length == 0) continue;
         if (wburl.urlTitle.length == 0) continue;
+        
         NSString *urlTitle = wburl.urlTitle;
         if (urlTitle.length > 27) {
             urlTitle = [[urlTitle substringToIndex:27] stringByAppendingString:YYTextTruncationToken];;
@@ -719,6 +720,7 @@
                         if (status.pics.count == 0) {
                             //@互联网的那点事:iPhone 6s官方宣传视频曝光，你们城里人真会玩，如果iphone 6s真的是这样那的确是碉堡了[嘻嘻]http://t.cn/RyU1m9J
                             //@互联网的那点事:iPhone 6s官方宣传视频曝光，你们城里人真会玩，如果iphone 6s真的是这样那的确是碉堡了[嘻嘻]
+                            //首先用@""来替换掉表情的URL（http://t.cn/RyU1m9J）
                             [text replaceCharactersInRange:range withString:@""];
                             break;
                         }
@@ -727,7 +729,7 @@
             }
             
             if ([text attribute:YYTextHighlightAttributeName atIndex:range.location] == nil) {
-                
+
                 // 替换的内容
                 NSMutableAttributedString *replace = [[NSMutableAttributedString alloc] initWithString:urlTitle];
                 if (wburl.urlTypePic.length) {
@@ -759,7 +761,7 @@
                 searchRange.length = text.length - searchRange.location;
             } else {
                 searchRange.location = searchRange.location + (searchRange.length ? searchRange.length : 1);
-                if (searchRange.location + 1>= text.length) break;
+                if (searchRange.location + 1 >= text.length) break;
                 searchRange.length = text.length - searchRange.location;
             }
         } while (1);
@@ -827,7 +829,7 @@
         NSAttributedString *emoText = [NSAttributedString attachmentStringWithEmojiImage:image fontSize:fontSize];
         [text replaceCharactersInRange:range withAttributedString:emoText];
         
-        //由【嘻嘻】转换成 笑脸少了一个字符  所以由emoClipLength计算range
+        //由【喵喵】转换成 笑脸少了一个字符  所以由emoClipLength计算range
         emoClipLength += range.length - 1;
     }
     
