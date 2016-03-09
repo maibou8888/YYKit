@@ -812,6 +812,8 @@
     for (NSTextCheckingResult *emo in emoticonResults) {
         if (emo.range.location == NSNotFound && emo.range.length <= 1) continue;
         NSRange range = emo.range;
+        
+        //如果已有文本转换成笑脸等图片 下一次计算range的时候要减去消失的3个字符
         range.location -= emoClipLength;
         
         //查看指定index的文本是否高亮以及是否为AttachmentAttribute
@@ -824,6 +826,8 @@
         
         NSAttributedString *emoText = [NSAttributedString attachmentStringWithEmojiImage:image fontSize:fontSize];
         [text replaceCharactersInRange:range withAttributedString:emoText];
+        
+        //由【嘻嘻】转换成 笑脸少了一个字符  所以由emoClipLength计算range
         emoClipLength += range.length - 1;
     }
     
